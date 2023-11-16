@@ -15,15 +15,24 @@
         <div class="row justify-content-center">
             <div class="col-6">
                 <div class="mb-3">
-                    <label for="todo" class="form-label">cose da fare</label>
-                    <input type="text" class="form-control" id="todo" v-model="thingsToDo">
+                <!-- input      -->
+                    <label for="new-todo" class="form-label">cose da fare</label>
+                    <input type="text" class="form-control" id="new-todo" v-model.trim="newTodo">
                 </div>
 
-                <button class="btn btn-primary" @click="addToDo">aggiungi</button>
+                <button class="btn btn-primary" @click="addTodo">aggiungi</button>
+                <small v-show="errorVisible" class="text-danger">Il todo non può essere vuoto</small>
+
                 <hr>
-                <ul class="list-group">
-                    <li v-for="(list, index) in whatToDo" :key="index" class="list-group-item">{{thingsToDo}}</li>
+
+                <!-- output -->
+                <ul class="list-group" v-if="task.length > 0">
+                    <li class="list-group-item" v-for="(todo, index) in task" :key="index" @click="toggleDone(index)" class="list-group-item d-flex justify-content-between">
+                        <span :class="{'text-decoration-line-through': todo.done}">{{ todo.text }}</span>
+                        <button class="btn btn-danger" @click.stop="deleteTodo(index)"> &cross;</button>
+                    </li>
                 </ul>
+                <div class="alert alert-success" v-else>Non hai nulla nella lista dei todo! Sei libero! </div>
             </div>
         </div>
     </div>
